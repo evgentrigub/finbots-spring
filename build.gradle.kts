@@ -30,6 +30,7 @@ dependencies {
 	// Security
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.hibernate:hibernate-validator:6.1.0.Final")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
 
 	// Lombok
 	runtimeOnly("com.h2database:h2")

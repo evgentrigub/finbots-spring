@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "users") // The table name is "users" by convention
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,18 +17,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, columnDefinition = "VARCHAR(255)")
     private String email;
 
-    @Column()
-    private String google;
-
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String password;
 
-    @Column()
+    @Column(columnDefinition = "VARCHAR(255)")
     private String tinkoffToken;
 
-    // Constructors, getters and setters
+    @Column(nullable = false, columnDefinition = "VARCHAR(255)")
+    private String role;
 }
 
