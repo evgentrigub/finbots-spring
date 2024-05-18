@@ -12,7 +12,7 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private String SECRET_KEY = "secret"; // TODO can be moved to application.properties
+    private final String SECRET_KEY = "secret"; // TODO can be moved to application.properties
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);

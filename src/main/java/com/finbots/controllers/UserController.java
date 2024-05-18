@@ -4,7 +4,8 @@ import com.finbots.models.*;
 import com.finbots.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,15 +27,18 @@ public class UserController {
     }
 
     @GetMapping
-    public User getProfile(Authentication authentication) {
-        UserPrincipalPayload userJwtPayload = (UserPrincipalPayload) authentication.getPrincipal();
-        var userOptional = userService.getByEmail(userJwtPayload.getEmail());
-        return userOptional.orElse(null);
+    public User getProfile(@AuthenticationPrincipal UserDetails userDetails) {
+        return userService.getByEmail(userDetails.getUsername());
     }
 
     @PutMapping
-    public void update(Authentication authentication, @RequestBody UserUpdateProfileDto updateUserProfile) {
-        UserPrincipalPayload userJwtPayload = (UserPrincipalPayload) authentication.getPrincipal();
-        userService.update(userJwtPayload.getId(), updateUserProfile);
+    public void update(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserUpdateProfileDto updateUserProfile) {
+        userService.update(userDetails.getUsername(), updateUserProfile);
     }
+
+    @PostMapping("/change-password")
+    public void changePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserUpdatePasswordRequestDto updatePasswordRequestDto) throws Exception {
+        userService.changePassword(updatePasswordRequestDto, userDetails.getUsername());
+    }
+
 }
