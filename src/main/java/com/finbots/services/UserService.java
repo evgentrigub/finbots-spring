@@ -66,6 +66,7 @@ public class UserService {
 
         User newUser = new User();
         newUser.setEmail(userDto.getEmail());
+        newUser.setRole("ROLE_USER");
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         try {
             userRepository.save(newUser);

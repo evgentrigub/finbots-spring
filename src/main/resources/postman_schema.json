@@ -1,0 +1,146 @@
+{
+  "info": {
+    "_postman_id": "d3406717-3ce9-4d2c-879e-f5f030e17bab",
+    "name": "UserController",
+    "description": "Collection for UserController endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "4822792"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "https://your-api-url/users/login",
+          "protocol": "https",
+          "host": "your-api-url",
+          "path": "/users/login"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}"
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "200",
+          "body": "{\n  \"token\": \"string\",\n  \"user\": {\n    \"id\": \"string\",\n    \"email\": \"string\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"roles\": [\n      \"string\"\n    ]\n  }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Signup",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "https://your-api-url/users/signup",
+          "protocol": "https",
+          "host": "your-api-url",
+          "path": "/users/signup"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\"\n}"
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "201",
+          "body": "{\n  \"message\": \"string\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Profile",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "https://your-api-url/users",
+          "protocol": "https",
+          "host": "your-api-url",
+          "path": "/users"
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "200",
+          "body": "{\n  \"id\": \"string\",\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"roles\": [\n    \"string\"\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Update Profile",
+      "request": {
+        "method": "PUT",
+        "url": {
+          "raw": "https://your-api-url/users",
+          "protocol": "https",
+          "host": "your-api-url",
+          "path": "/users"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"firstName\": \"string\",\n  \"lastName\": \"string\"\n}"
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "200",
+          "body": "{\n  \"message\": \"string\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Change Password",
+      "request": {
+        "method": "POST",
+        "url": {
+          "raw": "https://your-api-url/users/change-password",
+          "protocol": "https",
+          "host": "your-api-url",
+          "path": "/users/change-password"
+        },
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"oldPassword\": \"string\",\n  \"newPassword\": \"string\"\n}"
+        }
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "200",
+          "body": "{\n  \"message\": \"string\"\n}"
+        }
+      ]
+    }
+  ]
+}
