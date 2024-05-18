@@ -28,5 +28,10 @@ public class User {
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String role;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }
 
