@@ -1,6 +1,6 @@
 package com.finbots.repositories;
 
-import com.finbots.models.User;
+import com.finbots.models.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

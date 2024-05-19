@@ -1,7 +1,6 @@
-package com.finbots.models;
+package com.finbots.models.user;
 
-
-import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateProfileDto {
+public class UserDto {
     @Email
+    @NotNull
     private String email;
 
-    private String tinkoffToken;
+    @NotEmpty
+    private String password;
 }

@@ -1,6 +1,6 @@
 package com.finbots.security;
 
-import com.finbots.models.User;
+import com.finbots.models.user.User;
 import com.finbots.repositories.UserRepository;
 import com.finbots.security.exceptions.InvalidTokenException;
 import io.jsonwebtoken.ExpiredJwtException;

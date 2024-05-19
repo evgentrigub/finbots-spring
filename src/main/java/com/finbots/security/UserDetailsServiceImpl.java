@@ -1,6 +1,6 @@
 package com.finbots.security;
 
-import com.finbots.models.User;
+import com.finbots.models.user.User;
 import com.finbots.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

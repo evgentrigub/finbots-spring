@@ -1,6 +1,6 @@
 package com.finbots.services;
 
-import com.finbots.models.*;
+import com.finbots.models.user.*;
 import com.finbots.repositories.UserRepository;
 import com.finbots.security.JwtUtil;
 import com.finbots.security.exceptions.BadRequestException;
@@ -48,7 +48,7 @@ public class UserService {
             throw new IncorrectCredentialsException("Email or password is incorrect");
         }
 
-        var userId = userRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found")).getId();
+        var userId = getUserByEmail(dto.getEmail()).getId();
         final String jwt = jwtUtil.generateToken(userId);
 
         return new UserTokenDto(jwt);
@@ -71,16 +71,14 @@ public class UserService {
         }
     }
 
-    public UserInfoDto getByEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+    public UserInfoDto getIUserInfoByEmail(String email) {
+        User user = getUserByEmail(email);
         return new UserInfoDto(user.getEmail(), user.getTinkoffToken(), user.getRole());
     }
 
     @Transactional
     public void update(UserDetails details, UserUpdateProfileDto updateProfileDto) {
-        User user = userRepository.findByEmail(details.getUsername())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        User user = getUserByEmail(details.getUsername());
 
         if (!Objects.equals(updateProfileDto.getEmail(), user.getEmail()) && updateProfileDto.getEmail() != null  && !updateProfileDto.getEmail().isEmpty()) {
             Optional<User> userWithNewUsername = userRepository.findByEmail(updateProfileDto.getEmail());
@@ -96,15 +94,14 @@ public class UserService {
     }
 
     @Transactional
-    public void remove(String id) {
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-
-        userRepository.delete(user);
+    public void delete(String email) {
+        User user = getUserByEmail(email);
+        userRepository.deleteById(user.getId());
     }
 
+    @Transactional
     public void changePassword(UserUpdatePasswordRequestDto updatePasswordDto, String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = getUserByEmail(email);
 
         if (!passwordEncoder.matches(updatePasswordDto.getOldPass(), user.getPassword())) {
             throw new BadRequestException("Old password is incorrect");
@@ -112,5 +109,9 @@ public class UserService {
 
         user.setPassword(passwordEncoder.encode(updatePasswordDto.getNewPass()));
         userRepository.save(user);
+    }
+
+    private User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 }

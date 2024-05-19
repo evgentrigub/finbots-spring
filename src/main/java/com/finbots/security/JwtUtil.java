@@ -1,6 +1,6 @@
 package com.finbots.security;
 
-import com.finbots.models.User;
+import com.finbots.models.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

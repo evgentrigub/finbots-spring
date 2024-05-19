@@ -1,6 +1,6 @@
 package com.finbots.controllers;
 
-import com.finbots.models.*;
+import com.finbots.models.user.*;
 import com.finbots.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class UserController { // TODO добавить validated к метода
 
     @GetMapping
     public UserInfoDto getProfile(@AuthenticationPrincipal UserDetails userDetails) {
-        return userService.getByEmail(userDetails.getUsername());
+        return userService.getIUserInfoByEmail(userDetails.getUsername());
     }
 
     @PutMapping
@@ -39,6 +39,11 @@ public class UserController { // TODO добавить validated к метода
     @PostMapping("/change-password")
     public void changePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserUpdatePasswordRequestDto updatePasswordRequestDto) throws Exception {
         userService.changePassword(updatePasswordRequestDto, userDetails.getUsername());
+    }
+
+    @DeleteMapping
+    public void delete(@AuthenticationPrincipal UserDetails userDetails) {
+        userService.delete(userDetails.getUsername());
     }
 
 }

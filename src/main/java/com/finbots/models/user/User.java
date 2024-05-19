@@ -1,4 +1,4 @@
-package com.finbots.models;
+package com.finbots.models.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

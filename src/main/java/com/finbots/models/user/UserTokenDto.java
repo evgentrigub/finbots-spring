@@ -1,4 +1,4 @@
-package com.finbots.models;
+package com.finbots.models.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

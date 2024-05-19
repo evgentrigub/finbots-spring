@@ -1,6 +1,6 @@
 package com.finbots.controllers;
 
-import com.finbots.models.*;
+import com.finbots.models.user.*;
 import com.finbots.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +61,7 @@ class UserControllerTest {
         UserDetails userDetails = Mockito.mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("test@example.com");
         UserInfoDto expectedUser = new UserInfoDto("test@example.com", "Test User", "ROLE_USER");
-        when(userService.getByEmail("test@example.com")).thenReturn(expectedUser);
+        when(userService.getIUserInfoByEmail("test@example.com")).thenReturn(expectedUser);
 
         // Act
         UserInfoDto actualUser = userController.getProfile(userDetails);
@@ -70,7 +70,7 @@ class UserControllerTest {
         assertEquals(expectedUser.getEmail(), actualUser.getEmail());
         assertEquals(expectedUser.getRole(), actualUser.getRole());
         assertEquals(expectedUser.getTinkoffToken(), actualUser.getTinkoffToken());
-        verify(userService).getByEmail("test@example.com");
+        verify(userService).getIUserInfoByEmail("test@example.com");
     }
 
     @Test
@@ -84,7 +84,7 @@ class UserControllerTest {
         doNothing().when(userService).update(userDetails, updateUserProfile);
 
         UserInfoDto updatedUser = new UserInfoDto("updated@example.com", "updatedToken", "ROLE_USER");
-        when(userService.getByEmail("test@example.com")).thenReturn(updatedUser); // Mock getByEmail() to return updatedUser when called with "test@example.com"
+        when(userService.getIUserInfoByEmail("test@example.com")).thenReturn(updatedUser); // Mock getByEmail() to return updatedUser when called with "test@example.com"
 
         // Act
         userController.update(userDetails, updateUserProfile);
