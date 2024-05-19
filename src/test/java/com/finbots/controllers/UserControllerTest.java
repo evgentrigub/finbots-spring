@@ -60,14 +60,16 @@ class UserControllerTest {
         // Arrange
         UserDetails userDetails = Mockito.mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("test@example.com");
-        User expectedUser = new User("test@example.com", "Test User");
+        UserInfoDto expectedUser = new UserInfoDto("test@example.com", "Test User", "ROLE_USER");
         when(userService.getByEmail("test@example.com")).thenReturn(expectedUser);
 
         // Act
-        User actualUser = userController.getProfile(userDetails);
+        UserInfoDto actualUser = userController.getProfile(userDetails);
 
         // Assert
-        assertEquals(expectedUser, actualUser);
+        assertEquals(expectedUser.getEmail(), actualUser.getEmail());
+        assertEquals(expectedUser.getRole(), actualUser.getRole());
+        assertEquals(expectedUser.getTinkoffToken(), actualUser.getTinkoffToken());
         verify(userService).getByEmail("test@example.com");
     }
 
@@ -76,14 +78,23 @@ class UserControllerTest {
         // Arrange
         UserDetails userDetails = Mockito.mock(UserDetails.class);
         when(userDetails.getUsername()).thenReturn("test@example.com");
-        UserUpdateProfileDto updateUserProfile = new UserUpdateProfileDto("New Name");
-        doNothing().when(userService).update("test@example.com", updateUserProfile);
+        UserUpdateProfileDto updateUserProfile = new UserUpdateProfileDto();
+        updateUserProfile.setEmail("updated@example.com");
+        updateUserProfile.setTinkoffToken("updatedToken");
+        doNothing().when(userService).update(userDetails, updateUserProfile);
+
+        UserInfoDto updatedUser = new UserInfoDto("updated@example.com", "updatedToken", "ROLE_USER");
+        when(userService.getByEmail("test@example.com")).thenReturn(updatedUser); // Mock getByEmail() to return updatedUser when called with "test@example.com"
 
         // Act
         userController.update(userDetails, updateUserProfile);
+        UserInfoDto actualUser = userController.getProfile(userDetails);
 
         // Assert
-        verify(userService).update("test@example.com", updateUserProfile);
+        assertEquals(updatedUser.getEmail(), actualUser.getEmail());
+        assertEquals(updatedUser.getRole(), actualUser.getRole());
+        assertEquals(updatedUser.getTinkoffToken(), actualUser.getTinkoffToken());
+        verify(userService).update(userDetails, updateUserProfile);
     }
 
     @Test

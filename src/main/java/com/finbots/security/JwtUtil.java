@@ -1,9 +1,9 @@
 package com.finbots.security;
 
+import com.finbots.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -14,7 +14,7 @@ public class JwtUtil {
 
     private final String SECRET_KEY = "secret"; // TODO can be moved to application.properties
 
-    public String extractUsername(String token) {
+    public String extractUserId(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -35,8 +35,8 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return createToken(userDetails.getUsername());
+    public String generateToken(String userId) {
+        return createToken(userId);
     }
 
     private String createToken(String subject) {
@@ -45,8 +45,8 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public Boolean validateToken(String token, User user) {
+        final String userId = extractUserId(token);
+        return (userId.equals(user.getId()) && !isTokenExpired(token));
     }
 }

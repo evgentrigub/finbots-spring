@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController { // TODO добавить validated к методам
 
     @Autowired
     UserService userService;
@@ -27,13 +27,13 @@ public class UserController {
     }
 
     @GetMapping
-    public User getProfile(@AuthenticationPrincipal UserDetails userDetails) {
+    public UserInfoDto getProfile(@AuthenticationPrincipal UserDetails userDetails) {
         return userService.getByEmail(userDetails.getUsername());
     }
 
     @PutMapping
     public void update(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserUpdateProfileDto updateUserProfile) {
-        userService.update(userDetails.getUsername(), updateUserProfile);
+        userService.update(userDetails, updateUserProfile);
     }
 
     @PostMapping("/change-password")

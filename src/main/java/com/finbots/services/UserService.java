@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,11 +41,6 @@ public class UserService {
 
     private static final String DEMO_TINKOFF_TOKEN_SANDBOX = "t.xYg4kVvi-ragDR7gBnw6a6aI54S4MSGq_zYn7UFSMj0h0TeJJxzr-Z3C2g9x3NXvDtvfEopq_RBxANi61cFZZQ";
 
-    public User getByEmail(String email) {
-        var userOptional = userRepository.findByEmail(email);
-        return userOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-    }
-
     public UserTokenDto login(UserDto dto) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
@@ -52,8 +48,8 @@ public class UserService {
             throw new IncorrectCredentialsException("Email or password is incorrect");
         }
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(dto.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails);
+        var userId = userRepository.findByEmail(dto.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found")).getId();
+        final String jwt = jwtUtil.generateToken(userId);
 
         return new UserTokenDto(jwt);
     }
@@ -75,15 +71,21 @@ public class UserService {
         }
     }
 
-    @Transactional
-    public void update(String email, UserUpdateProfileDto updateProfileDto) {
+    public UserInfoDto getByEmail(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return new UserInfoDto(user.getEmail(), user.getTinkoffToken(), user.getRole());
+    }
 
-        if (updateProfileDto.getEmail() != null && !updateProfileDto.getEmail().isEmpty()) {
+    @Transactional
+    public void update(UserDetails details, UserUpdateProfileDto updateProfileDto) {
+        User user = userRepository.findByEmail(details.getUsername())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        if (!Objects.equals(updateProfileDto.getEmail(), user.getEmail()) && updateProfileDto.getEmail() != null  && !updateProfileDto.getEmail().isEmpty()) {
             Optional<User> userWithNewUsername = userRepository.findByEmail(updateProfileDto.getEmail());
             if (userWithNewUsername.isPresent()) {
-                throw new BadRequestException("Username already taken");
+                throw new BadRequestException("Email is already taken");
             }
             user.setEmail(updateProfileDto.getEmail());
         }

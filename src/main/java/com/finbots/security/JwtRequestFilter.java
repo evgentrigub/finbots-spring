@@ -1,5 +1,7 @@
 package com.finbots.security;
 
+import com.finbots.models.User;
+import com.finbots.repositories.UserRepository;
 import com.finbots.security.exceptions.InvalidTokenException;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,18 +27,21 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String username = null;
+        String userId = null;
         String jwt = null;
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             try {
-                username = jwtUtil.extractUsername(jwt);
+                userId = jwtUtil.extractUserId(jwt);
             } catch (IllegalArgumentException e) {
                 throw new InvalidTokenException("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
@@ -44,10 +49,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             }
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            User user = this.userRepository.findById(userId).orElseThrow(() -> new InvalidTokenException("User not found"));
+            UserDetails userDetails = this.userDetailsService.loadUserByUsername(user.getEmail());
 
-            if (jwtUtil.validateToken(jwt, userDetails)) {
+            if (jwtUtil.validateToken(jwt, user)) {
                 UsernamePasswordAuthenticationToken token =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
