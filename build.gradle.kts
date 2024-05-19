@@ -33,6 +33,9 @@ dependencies {
 	implementation("org.hibernate:hibernate-validator:6.1.0.Final")
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 
+	// Swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+
 	// Lombok
 	runtimeOnly("com.h2database:h2")
 	compileOnly("org.projectlombok:lombok:1.18.28")

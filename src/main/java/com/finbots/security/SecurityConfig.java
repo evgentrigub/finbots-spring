@@ -43,7 +43,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
                                 "/users/login",
-                                "/users/signup").permitAll()
+                                "/users/signup",
+                                "/swagger-ui.html", // Permit Swagger UI page
+                                "/v3/api-docs/**", // Permit Swagger API docs
+                                "/swagger-ui/**", // Permit Swagger UI resources
+                                "/webjars/**" // Permit webjars resources
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
