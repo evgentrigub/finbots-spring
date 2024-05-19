@@ -1,15 +1,16 @@
 package com.finbots.controllers;
 
-import com.finbots.models.*;
+import com.finbots.models.user.*;
 import com.finbots.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user") // TODO: Change to "/users" to follow REST conventions
-public class UserController {
+@RequestMapping("/users")
+public class UserController { // TODO добавить validated к методам
 
     @Autowired
     UserService userService;
@@ -26,17 +27,23 @@ public class UserController {
     }
 
     @GetMapping
-    // @PreAuthorize or @Secured can be used to secure the endpoint
-    public User getProfile(Authentication authentication) {
-        UserPrincipalPayload userJwtPayload = (UserPrincipalPayload) authentication.getPrincipal();
-        var userOptional = userService.getByEmail(userJwtPayload.getEmail());
-        return userOptional.get();
+    public UserInfoDto getProfile(@AuthenticationPrincipal UserDetails userDetails) {
+        return userService.getIUserInfoByEmail(userDetails.getUsername());
     }
 
     @PutMapping
-    // @PreAuthorize or @Secured can be used to secure the endpoint
-    public void update(Authentication authentication, @RequestBody UserUpdateProfileDto updateUserProfile) {
-        UserPrincipalPayload userJwtPayload = (UserPrincipalPayload) authentication.getPrincipal();
-        userService.update(userJwtPayload.getId(), updateUserProfile);
+    public void update(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserUpdateProfileDto updateUserProfile) {
+        userService.update(userDetails, updateUserProfile);
     }
+
+    @PostMapping("/change-password")
+    public void changePassword(@AuthenticationPrincipal UserDetails userDetails, @RequestBody UserUpdatePasswordRequestDto updatePasswordRequestDto) throws Exception {
+        userService.changePassword(updatePasswordRequestDto, userDetails.getUsername());
+    }
+
+    @DeleteMapping
+    public void delete(@AuthenticationPrincipal UserDetails userDetails) {
+        userService.delete(userDetails.getUsername());
+    }
+
 }

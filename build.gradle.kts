@@ -21,6 +21,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation ("javax.xml.bind:jaxb-api:2.3.1")
 
 	// DB
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -30,6 +31,10 @@ dependencies {
 	// Security
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.hibernate:hibernate-validator:6.1.0.Final")
+	implementation("io.jsonwebtoken:jjwt:0.9.1")
+
+	// Swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
 	// Lombok
 	runtimeOnly("com.h2database:h2")
