@@ -1,9 +1,12 @@
 package com.finbots.models.user;
 
+import com.finbots.models.bot.Bot;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Entity
@@ -28,6 +31,9 @@ public class User {
 
     @Column(nullable = false, columnDefinition = "VARCHAR(255)")
     private String role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bot> bots;
 
     public User(String email, String password) {
         this.email = email;
