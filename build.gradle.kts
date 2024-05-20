@@ -22,6 +22,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation ("javax.xml.bind:jaxb-api:2.3.1")
+	implementation ("me.paulschwarz:spring-dotenv:4.0.0")
 
 	// DB
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")

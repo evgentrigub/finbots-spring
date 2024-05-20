@@ -37,3 +37,4 @@ out/
 
 ### Dev Profile ###
 /src/main/resources/application-dev.properties
+/.env
