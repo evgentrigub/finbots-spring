@@ -50,7 +50,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            User user = this.userRepository.findById(userId).orElseThrow(() -> new InvalidTokenException("User not found"));
+            User user = this.userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new InvalidTokenException("User not found"));
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(user.getEmail());
 
             if (jwtUtil.validateToken(jwt, user)) {

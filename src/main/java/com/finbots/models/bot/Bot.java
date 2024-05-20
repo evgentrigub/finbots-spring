@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "bots")
@@ -18,25 +17,18 @@ public class Bot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
+    private String ticker;
+
     private String broker;
-    @ElementCollection
-    private List<String> operations;
-    private LocalDateTime createdDate;
+//    @ElementCollection
+//    private List<String> operations;
+    private LocalDateTime createdDate = LocalDateTime.now();
     private String status;
     private String strategy;
-    private String ticker;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    // getters and setters
-    public Bot(String broker, String status, String strategy, String ticker, User user) {
-        this.ticker = ticker;
-        this.broker = broker;
-        this.strategy = strategy;
-        this.status = status;
-        this.user = user;
-        this.createdDate = LocalDateTime.now();
-    }
 }
