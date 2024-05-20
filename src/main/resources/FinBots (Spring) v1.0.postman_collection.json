@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "83732d0d-1704-407e-b4c9-b98cd89c7905",
+		"_postman_id": "7be32ccf-5cc7-4ecd-b304-5ac7c4711290",
 		"name": "FinBots (Spring) v1.0",
 		"description": "Collection for UserController endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -35,39 +35,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"pass\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/login",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"login"
-									]
-								}
-							},
-							"status": "200",
-							"_postman_previewlanguage": "Text",
-							"header": [],
-							"cookie": [],
-							"body": "{\n  \"token\": \"string\",\n  \"user\": {\n    \"id\": \"string\",\n    \"email\": \"string\",\n    \"firstName\": \"string\",\n    \"lastName\": \"string\",\n    \"roles\": [\n      \"string\"\n    ]\n  }\n}"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Signup",
@@ -94,39 +62,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"email\": \"test@test.com\",\n  \"password\": \"pass\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/signup",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"signup"
-									]
-								}
-							},
-							"status": "201",
-							"_postman_previewlanguage": "Text",
-							"header": [],
-							"cookie": [],
-							"body": "{\n  \"message\": \"string\"\n}"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Get Profile",
@@ -148,34 +84,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhNWY3MWIzMy0xOTQ4LTQxNGEtODNjMi04MGFhOGE5Zjg2ZDciLCJpYXQiOjE3MTYxMzUzNzYsImV4cCI6MTcxNjE3MTM3Nn0.wO7S9_D2ldgo3FlwVgTDdIBayGvJ5Xy4qEftfjBq1uU"
-									}
-								],
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "200",
-							"_postman_previewlanguage": "Text",
-							"header": [],
-							"cookie": [],
-							"body": "{\n  \"id\": \"string\",\n  \"email\": \"string\",\n  \"firstName\": \"string\",\n  \"lastName\": \"string\",\n  \"roles\": [\n    \"string\"\n  ]\n}"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Update Profile",
@@ -205,42 +114,7 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhNWY3MWIzMy0xOTQ4LTQxNGEtODNjMi04MGFhOGE5Zjg2ZDciLCJpYXQiOjE3MTYxMzUzNzYsImV4cCI6MTcxNjE3MTM3Nn0.wO7S9_D2ldgo3FlwVgTDdIBayGvJ5Xy4qEftfjBq1uU"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"email\": \"test2@test.com\",\n  \"tinkoffToken\": \"string2\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users"
-									]
-								}
-							},
-							"status": "200",
-							"_postman_previewlanguage": "Text",
-							"header": [],
-							"cookie": [],
-							"body": "{\n  \"message\": \"string\"\n}"
-						}
-					]
+					"response": []
 				},
 				{
 					"name": "Change Password",
@@ -274,43 +148,106 @@
 							]
 						}
 					},
-					"response": [
-						{
-							"name": "Success",
-							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNzE2MTMzMzM2LCJleHAiOjE3MTYxNjkzMzZ9.X-3lDpMCssGfgacpFHIErmGegNG8v4g_sG7l_oKpj7A"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"oldPass\": \"pass\",\n  \"newPass\": \"pass1\"\n}"
-								},
-								"url": {
-									"raw": "{{baseUrl}}/users/change-password",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"users",
-										"change-password"
-									]
-								}
-							},
-							"status": "200",
-							"_postman_previewlanguage": "Text",
-							"header": [],
-							"cookie": [],
-							"body": "{\n  \"message\": \"string\"\n}"
+					"response": []
+				},
+				{
+					"name": "Get User's Bots",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/bots",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"users",
+								"bots"
+							]
 						}
-					]
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bots",
+			"item": [
+				{
+					"name": "Create Bot",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2MjEyNTMxLCJleHAiOjE3MTYyNDg1MzF9.5rJgG3x0P_w78yGAL9aZ8iIY_b8IL-KrduruxY3bUcI"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"ticker\": \"GOOG\",\n  \"strategy\": \"simple\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/bots",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Bot",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2MjEyNTMxLCJleHAiOjE3MTYyNDg1MzF9.5rJgG3x0P_w78yGAL9aZ8iIY_b8IL-KrduruxY3bUcI"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/bots/AAPL",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bots",
+								"AAPL"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Bot",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE2MjEyNTMxLCJleHAiOjE3MTYyNDg1MzF9.5rJgG3x0P_w78yGAL9aZ8iIY_b8IL-KrduruxY3bUcI"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/bots/AAPL",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"bots",
+								"AAPL"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

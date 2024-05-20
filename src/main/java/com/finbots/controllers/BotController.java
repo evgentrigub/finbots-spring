@@ -1,10 +1,12 @@
 package com.finbots.controllers;
 
-import com.finbots.models.bot.Bot;
+import com.finbots.models.bot.BotInfoDto;
 import com.finbots.models.bot.BotRequestDto;
 import com.finbots.models.bot.BotResponseDto;
 import com.finbots.services.BotService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,22 +17,18 @@ public class BotController {
     BotService botService;
 
     @PostMapping
-    public BotResponseDto create(@RequestBody BotRequestDto botRequestDto) {
-        return botService.create(botRequestDto);
+    public BotResponseDto create(@AuthenticationPrincipal UserDetails userDetails, @RequestBody BotRequestDto botRequestDto) {
+        return botService.create(userDetails, botRequestDto);
     }
 
-    @GetMapping("/{id}")
-    public Bot get(@PathVariable Long id) {
-        return botService.get(id);
+    @GetMapping("/{ticker}")
+    public BotInfoDto get(@PathVariable String ticker) {
+        return botService.get(ticker);
     }
 
-    @PutMapping("/{id}")
-    public BotResponseDto update(@PathVariable Long id, @RequestBody BotRequestDto botRequestDto) {
-        return botService.update(id, botRequestDto);
+    @DeleteMapping("/{ticker}")
+    public void delete(@PathVariable String ticker) {
+        botService.delete(ticker);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        botService.delete(id);
-    }
 }
