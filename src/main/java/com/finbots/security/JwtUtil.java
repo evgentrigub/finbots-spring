@@ -35,8 +35,8 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(Long userId) {
-        return createToken(userId.toString());
+    public String generateToken(String userId) {
+        return createToken(userId);
     }
 
     private String createToken(String subject) {
@@ -46,7 +46,7 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, User user) {
-        final long userId = Long.parseLong(extractUserId(token));
+        final String userId = extractUserId(token);
         return userId == user.getId() && !isTokenExpired(token);
     }
 }
