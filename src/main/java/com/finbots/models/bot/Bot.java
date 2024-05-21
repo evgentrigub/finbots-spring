@@ -26,7 +26,7 @@ public class Bot {
     private String broker;
 //    @ElementCollection
 //    private List<String> operations;
-    private LocalDateTime createdDate = LocalDateTime.now();
+    private LocalDateTime createdDate;
     private String status;
     private String strategy;
 

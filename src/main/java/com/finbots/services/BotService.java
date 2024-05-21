@@ -40,6 +40,7 @@ public class BotService {
                 .broker("default")
                 .status("active")
                 .user(user)
+                .createdDate(java.time.LocalDateTime.now())
                 .build();
 
         try {
