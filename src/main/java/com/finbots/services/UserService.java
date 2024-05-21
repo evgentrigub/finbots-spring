@@ -6,6 +6,7 @@ import com.finbots.repositories.UserRepository;
 import com.finbots.security.JwtUtil;
 import com.finbots.security.exceptions.BadRequestException;
 import com.finbots.security.exceptions.IncorrectCredentialsException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -42,6 +44,7 @@ public class UserService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         } catch (BadCredentialsException e) {
+            log.info("Incorrect credentials: {}", dto.getEmail());
             throw new IncorrectCredentialsException("Email or password is incorrect");
         }
 
@@ -54,16 +57,21 @@ public class UserService {
     @Transactional
     public void create(UserDto userDto) {
         if (userRepository.existsByEmail(userDto.getEmail())) {
+            log.error("Error while creating new user. Email already exists: {}", userDto.getEmail());
             throw new BadRequestException("User with this email already exists");
         }
 
-        User newUser = new User();
-        newUser.setEmail(userDto.getEmail());
-        newUser.setRole("ROLE_USER");
-        newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        User newUser = User.builder()
+                .email(userDto.getEmail())
+                .password(passwordEncoder.encode(userDto.getPassword()))
+                .tinkoffToken(DEMO_TINKOFF_TOKEN_SANDBOX)
+                .role("ROLE_USER")
+                .build();
+
         try {
             userRepository.save(newUser);
         } catch (Exception e) {
+            log.error("Error while creating new user: {}", e.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error while creating new user: " + e.getMessage());
         }
     }
@@ -101,15 +109,21 @@ public class UserService {
         User user = getUserByEmail(email);
 
         if (!passwordEncoder.matches(updatePasswordDto.getOldPass(), user.getPassword())) {
+            // log error with info about the user
+            log.error("Old password is incorrect. User: {}", email);
             throw new BadRequestException("Old password is incorrect");
         }
 
         user.setPassword(passwordEncoder.encode(updatePasswordDto.getNewPass()));
         userRepository.save(user);
+        log.info("Password changed for user: {}", email);
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return userRepository.findByEmail(email).orElseThrow(() -> {
+            log.error("User not found: {}", email);
+            return new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        });
     }
 
     public List<BotInfoDto> getBotsByUser(String email) {

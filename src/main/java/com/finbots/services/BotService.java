@@ -9,6 +9,7 @@ import com.finbots.repositories.BotRepository;
 import com.finbots.security.exceptions.BadRequestException;
 import com.finbots.security.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
+@Slf4j
 public class BotService {
 
     @Autowired
@@ -28,19 +30,22 @@ public class BotService {
         User user = userService.getUserByEmail(userDetails.getUsername());
 
         botRepository.findByTicker(botRequestDto.getTicker()).ifPresent(b -> {
+            log.error("Bot with this ticker already exists: {}", botRequestDto.getTicker());
             throw new BadRequestException("Bot with this ticker already exists");
         });
 
-        Bot bot = new Bot();
-        bot.setTicker(botRequestDto.getTicker());
-        bot.setStrategy(botRequestDto.getStrategy());
-        bot.setBroker("default");
-        bot.setStatus("active");
-        bot.setUser(user);
-
+        Bot bot = Bot.builder()
+                .ticker(botRequestDto.getTicker())
+                .strategy(botRequestDto.getStrategy())
+                .broker("default")
+                .status("active")
+                .user(user)
+                .createdDate(java.time.LocalDateTime.now())
+                .build();
 
         try {
             botRepository.save(bot);
+            log.info("Bot created: {}", bot.getTicker());
         } catch (ResponseStatusException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error creating bot");
         }
@@ -51,6 +56,8 @@ public class BotService {
     @Transactional
     public BotInfoDto get(UserDetails userDetails, String ticker) {
         User user = userService.getUserByEmail(userDetails.getUsername());
+        log.info("User: {}, Ticker: {}", user.getId(), ticker);
+
         return user.getBots().stream()
                 .filter(b -> b.getTicker().equals(ticker))
                 .findFirst()
@@ -68,5 +75,6 @@ public class BotService {
                 .orElseThrow(() -> new NotFoundException("Bot not found"));
 
         botRepository.deleteById(botId);
+        log.info("Bot deleted: {}", ticker);
     }
 }
