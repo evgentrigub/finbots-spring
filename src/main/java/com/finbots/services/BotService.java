@@ -48,17 +48,25 @@ public class BotService {
         return new BotResponseDto(bot.getTicker());
     }
 
-    public BotInfoDto get(String ticker) {
-        var bot = this.botRepository.findByTicker(ticker)
+    @Transactional
+    public BotInfoDto get(UserDetails userDetails, String ticker) {
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        return user.getBots().stream()
+                .filter(b -> b.getTicker().equals(ticker))
+                .findFirst()
+                .map(BotInfoDto::new)
                 .orElseThrow(() -> new NotFoundException("Bot not found"));
-        return new BotInfoDto(bot);
     }
 
     @Transactional
-    public void delete(String ticker) {
-        var botId = this.botRepository.findByTicker(ticker)
-                .orElseThrow(() -> new NotFoundException("Bot not found"))
-                .getId();
+    public void delete(UserDetails userDetails, String ticker) {
+        User user = userService.getUserByEmail(userDetails.getUsername());
+        String botId = user.getBots().stream()
+                .filter(b -> b.getTicker().equals(ticker))
+                .findFirst()
+                .map(Bot::getId)
+                .orElseThrow(() -> new NotFoundException("Bot not found"));
+
         botRepository.deleteById(botId);
     }
 }

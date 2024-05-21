@@ -22,13 +22,13 @@ public class BotController {
     }
 
     @GetMapping("/{ticker}")
-    public BotInfoDto get(@PathVariable String ticker) {
-        return botService.get(ticker);
+    public BotInfoDto get(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String ticker) {
+        return botService.get(userDetails, ticker);
     }
 
     @DeleteMapping("/{ticker}")
-    public void delete(@PathVariable String ticker) {
-        botService.delete(ticker);
+    public void delete(@AuthenticationPrincipal UserDetails userDetails, @PathVariable String ticker) {
+        botService.delete(userDetails, ticker);
     }
 
 }
