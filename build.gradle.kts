@@ -1,7 +1,7 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.2.3"
-	id("io.spring.dependency-management") version "1.1.4"
+	id("org.springframework.boot") version "3.2.5"
+	id("io.spring.dependency-management") version "1.1.5"
 	id("com.github.ben-manes.versions") version "0.39.0"
 }
 
@@ -32,7 +32,7 @@ dependencies {
 
 	// Security
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.hibernate:hibernate-validator:6.1.0.Final")
+	implementation("org.hibernate:hibernate-validator:8.0.1.Final")
 	implementation("io.jsonwebtoken:jjwt:0.9.1")
 
 	// Swagger
@@ -40,8 +40,8 @@ dependencies {
 
 	// Lombok
 	runtimeOnly("com.h2database:h2")
-	compileOnly("org.projectlombok:lombok:1.18.28")
-	annotationProcessor("org.projectlombok:lombok:1.18.28")
+	compileOnly("org.projectlombok:lombok:1.18.32")
+	annotationProcessor("org.projectlombok:lombok:1.18.32")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
