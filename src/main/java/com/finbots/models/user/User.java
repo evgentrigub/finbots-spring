@@ -1,5 +1,6 @@
 package com.finbots.models.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.finbots.models.bot.Bot;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class User {
     private String role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Bot> bots;
 
     public User(String email, String password) {

@@ -1,5 +1,6 @@
 package com.finbots.models.bot;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.finbots.models.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,5 +33,6 @@ public class Bot {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }
