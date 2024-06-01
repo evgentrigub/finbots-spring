@@ -18,7 +18,8 @@ public class BotController {
 
     @PostMapping
     public BotResponseDto create(@AuthenticationPrincipal UserDetails userDetails, @RequestBody BotRequestDto botRequestDto) {
-        return botService.create(userDetails, botRequestDto);
+//        return botService.create(userDetails, botRequestDto);
+        return botService.createCronJobDemo(botRequestDto.getTicker());
     }
 
     @GetMapping("/{ticker}")

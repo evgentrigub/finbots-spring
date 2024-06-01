@@ -1,8 +1,13 @@
+import com.google.protobuf.gradle.id
+
 plugins {
 	java
 	id("org.springframework.boot") version "3.2.5"
 	id("io.spring.dependency-management") version "1.1.5"
+
+	// gRPC
 	id("com.github.ben-manes.versions") version "0.39.0"
+	id("com.google.protobuf") version "0.9.4"
 }
 
 group = "com"
@@ -16,6 +21,10 @@ repositories {
 	mavenCentral()
 }
 
+val grpcSpringBootStarterVersion = "3.0.0.RELEASE"
+val grpcVersion = "1.64.0"
+val protocVersion = "3.25.3"
+
 dependencies {
 	// Core
 	implementation("org.springframework.boot:spring-boot-starter")
@@ -24,6 +33,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation ("javax.xml.bind:jaxb-api:2.3.1")
 	implementation ("me.paulschwarz:spring-dotenv:4.0.0")
+	implementation ("javax.annotation:javax.annotation-api:1.3.2") // solves build issue with gRPC
 
 	// DB
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -43,7 +53,21 @@ dependencies {
 	compileOnly("org.projectlombok:lombok:1.18.32")
 	annotationProcessor("org.projectlombok:lombok:1.18.32")
 
+	// gRPC
+	implementation("io.grpc:grpc-netty-shaded:$grpcVersion")
+	implementation("io.grpc:grpc-protobuf:$grpcVersion")
+	implementation("io.grpc:grpc-stub:$grpcVersion")
+	implementation("com.google.protobuf:protobuf-java:$protocVersion")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+protobuf {
+	protoc { artifact = "com.google.protobuf:protoc:$protocVersion" }
+	plugins {
+		id("grpc") { artifact = "io.grpc:protoc-gen-grpc-java:$grpcVersion" }
+	}
+	generateProtoTasks { all().forEach { it.plugins { id("grpc") } } }
 }
 
 tasks.withType<Test> {

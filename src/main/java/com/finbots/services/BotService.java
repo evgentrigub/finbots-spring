@@ -26,6 +26,20 @@ public class BotService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    JobServiceClient jobServiceClient;
+
+    public BotResponseDto createCronJobDemo(String param) {
+        try {
+            var status = this.jobServiceClient.createJob(param);
+            return new BotResponseDto(param, status);
+        }     catch (Exception e) {
+            log.error("Error creating cron job: {}", e.getMessage());
+            return new BotResponseDto(param, "error");
+        }
+    }
+
+    @Transactional
     public BotResponseDto create(UserDetails userDetails, BotRequestDto botRequestDto) {
         User user = userService.getUserByEmail(userDetails.getUsername());
 
@@ -50,7 +64,7 @@ public class BotService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error creating bot");
         }
 
-        return new BotResponseDto(bot.getTicker());
+        return new BotResponseDto(bot.getTicker(), "success");
     }
 
     @Transactional

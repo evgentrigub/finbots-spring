@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BotResponseDto {
     private String ticker;
+    private String status;
 }

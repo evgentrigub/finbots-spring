@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.function.Function;
 
 @Component
@@ -47,6 +48,6 @@ public class JwtUtil {
 
     public Boolean validateToken(String token, User user) {
         final String userId = extractUserId(token);
-        return userId == user.getId() && !isTokenExpired(token);
+        return Objects.equals(userId, user.getId()) && !isTokenExpired(token);
     }
 }

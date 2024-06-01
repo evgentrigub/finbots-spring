@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option java_package = "com.finbots.job";
+
+message JobRequest {
+  string param = 1;
+}
+
+message JobReply {
+  string status = 2;
+}
+
+service JobService {
+  rpc createJob (JobRequest) returns (JobReply) {}
+  rpc getJobStatus (JobRequest) returns (JobReply) {}
+  rpc getAllJobs (google.protobuf.Empty) returns (JobReply) {}
+}
+
